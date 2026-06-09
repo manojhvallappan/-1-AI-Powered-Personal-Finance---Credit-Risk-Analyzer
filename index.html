@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinSight AI — AI-Powered Personal Finance & Credit Risk Analyzer</title>
+  <meta name="description"
+    content="Enterprise-grade AI-powered personal finance dashboard with credit risk analysis, fraud detection, and intelligent insights." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=2.0" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+</head>
+
+<body class="loading">
+  <!-- Mesh Background -->
+  <div class="mesh-container">
+    <div class="mesh-ball ball-1"></div>
+    <div class="mesh-ball ball-2"></div>
+    <div class="mesh-ball ball-3"></div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-icon">
+          <img src="logo.jpg" alt="FinSight AI Logo" class="logo-img">
+        </div>
+        <span class="logo-text">FinSight AI</span>
+      </div>
+      <button class="sidebar-toggle" id="sidebarToggle" title="Collapse sidebar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a href="#" class="nav-item active" data-page="dashboard" id="nav-dashboard">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
+        </span>
+        <span class="nav-label">Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" data-page="transactions" id="nav-transactions">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
+          </svg>
+        </span>
+        <span class="nav-label">Transactions</span>
+        <span class="nav-badge">24</span>
+      </a>
+      <a href="#" class="nav-item" data-page="analytics" id="nav-analytics">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 20V10M12 20V4M6 20v-6" />
+          </svg>
+        </span>
+        <span class="nav-label">Analytics</span>
+      </a>
+      <a href="#" class="nav-item" data-page="ai-insights" id="nav-ai-insights">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2a10 10 0 11-10 10A10 10 0 0112 2zm0 0v10m0 0l4-4m-4 4l-4-4" />
+          </svg>
+        </span>
+        <span class="nav-label">AI Insights</span>
+        <span class="nav-badge pulse">3</span>
+      </a>
+
+      <div class="nav-section-label" style="margin-top:1.5rem">Risk & Security</div>
+      <a href="#" class="nav-item" data-page="credit-risk" id="nav-credit-risk">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+          </svg>
+        </span>
+        <span class="nav-label">Credit Risk</span>
+      </a>
+      <a href="#" class="nav-item" data-page="fraud-detection" id="nav-fraud-detection">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+        </span>
+        <span class="nav-label">Fraud Detection</span>
+        <span class="nav-badge danger">2</span>
+      </a>
+
+      <div class="nav-section-label" style="margin-top:1.5rem">Account</div>
+      <a href="#" class="nav-item" data-page="settings" id="nav-settings">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+          </svg>
+        </span>
+        <span class="nav-label">Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar-sm">
+          <img src="profile.jpg" alt="Profile" class="avatar-img-round">
+        </div>
+        <div class="user-info">
+          <div class="user-name-sm">Manojh Vallappan D V</div>
+          <div class="user-plan">Pro Plan</div>
+        </div>
+        <div class="user-status-dot"></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-wrapper" id="mainWrapper">
+    <!-- Live Ticker Strip -->
+    <div class="ticker-strip" id="tickerStrip">
+      <div class="ticker-track" id="tickerTrack"></div>
+    </div>
+
+    <!-- Top Navbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12h18M3 6h18M3 18h18" />
+          </svg>
+        </button>
+        <div class="page-title-wrap">
+          <h1 class="page-title" id="pageTitle">Dashboard</h1>
+          <span class="page-subtitle" id="pageSubtitle">Welcome back, Manojh</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" />
+          </svg>
+          <input type="text" class="search-input" placeholder="Search transactions, insights..." id="globalSearch" />
+          <kbd class="search-kbd">⌘K</kbd>
+        </div>
+        <button class="icon-btn notification-btn" id="notificationBtn" title="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
+          </svg>
+          <span class="notif-dot">3</span>
+        </button>
+        <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+          <span class="theme-icon dark-icon">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+            </svg>
+          </span>
+          <span class="theme-icon light-icon">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5" />
+              <path
+                d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+            </svg>
+          </span>
+          <div class="theme-slider"></div>
+        </button>
+        <div class="user-avatar-wrap" id="userAvatarBtn">
+          <div class="user-avatar">
+            <img src="profile.jpg" alt="Profile" class="avatar-img-round">
+          </div>
+          <div class="user-dropdown" id="userDropdown">
+            <div class="dropdown-header">
+              <div class="user-avatar-lg">
+                <img src="profile.jpg" alt="Profile" class="avatar-img-round">
+              </div>
+              <div>
+                <div class="dropdown-name">Manojh Vallappan D V</div>
+                <div class="dropdown-email">manojh.vallappan@finsightai.io</div>
+              </div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">Profile</a>
+            <a href="#" class="dropdown-item">Billing</a>
+            <a href="#" class="dropdown-item">API Keys</a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item danger">Sign out</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Pages -->
+    <main class="content-area">
+
+      <!-- ===== DASHBOARD PAGE ===== -->
+      <div class="page active" id="page-dashboard">
+
+        <!-- Skeleton Loader -->
+        <div class="skeleton-overlay" id="skeletonLoader">
+          <div class="skeleton-grid">
+            <div class="skeleton-card skel-3"></div>
+            <div class="skeleton-card skel-2"></div>
+            <div class="skeleton-card skel-2"></div>
+            <div class="skeleton-card skel-2"></div>
+            <div class="skeleton-card skel-3"></div>
+          </div>
+          <div class="skeleton-grid-2">
+            <div class="skeleton-chart skel-9"></div>
+            <div class="skeleton-chart skel-3"></div>
+          </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <section class="kpi-section" id="kpiSection">
+          <div class="kpi-card" id="kpi-balance">
+            <div class="kpi-header">
+              <span class="kpi-label">Total Balance</span>
+              <div class="kpi-icon balance-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="1" y="4" width="22" height="16" rx="2" />
+                  <line x1="1" y1="10" x2="23" y2="10" />
+                </svg>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiBalance">$0</div>
+            <div class="kpi-change positive">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M7 17l10-10M7 7h10v10" />
+              </svg>
+              +8.2% from last month
+            </div>
+            <div class="kpi-sparkline">
+              <canvas id="sparkline1" height="40"></canvas>
+            </div>
+          </div>
+
+          <div class="kpi-card" id="kpi-income">
+            <div class="kpi-header">
+              <span class="kpi-label">Monthly Income</span>
+              <div class="kpi-icon income-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="1" x2="12" y2="23" />
+                  <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+                </svg>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiIncome">$0</div>
+            <div class="kpi-change positive">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M7 17l10-10M7 7h10v10" />
+              </svg>
+              +3.5% vs previous
+            </div>
+            <div class="kpi-sparkline">
+              <canvas id="sparkline2" height="40"></canvas>
+            </div>
+          </div>
+
+          <div class="kpi-card" id="kpi-expenses">
+            <div class="kpi-header">
+              <span class="kpi-label">Monthly Expenses</span>
+              <div class="kpi-icon expense-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="8" y1="12" x2="16" y2="12" />
+                </svg>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiExpenses">$0</div>
+            <div class="kpi-change negative">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M7 7l10 10M17 7v10H7" />
+              </svg>
+              +12.4% higher this month
+            </div>
+            <div class="kpi-sparkline">
+              <canvas id="sparkline3" height="40"></canvas>
+            </div>
+          </div>
+
+          <div class="kpi-card" id="kpi-savings">
+            <div class="kpi-header">
+              <span class="kpi-label">Savings Rate</span>
+              <div class="kpi-icon savings-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16" />
+                  <path d="M3 21h18M9 7h1M9 11h1M14 7h1M14 11h1" />
+                </svg>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiSavings">0%</div>
+            <div class="kpi-change positive">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M7 17l10-10M7 7h10v10" />
+              </svg>
+              On track for goal
+            </div>
+            <div class="kpi-sparkline">
+              <canvas id="sparkline4" height="40"></canvas>
+            </div>
+          </div>
+
+          <div class="kpi-card health-card" id="kpi-health">
+            <div class="kpi-header">
+              <span class="kpi-label">Financial Health Score</span>
+              <div class="kpi-icon health-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                </svg>
+              </div>
+            </div>
+            <div class="health-score-wrap">
+              <div class="health-score-circle">
+                <svg viewBox="0 0 100 100" class="health-ring">
+                  <circle cx="50" cy="50" r="40" class="ring-bg" />
+                  <circle cx="50" cy="50" r="40" class="ring-fill" id="healthRingFill" />
+                </svg>
+                <div class="health-score-text">
+                  <span class="health-num" id="healthScore">0</span>
+                  <span class="health-max">/100</span>
+                </div>
+              </div>
+              <div class="health-details">
+                <div class="health-label-badge excellent" id="healthBadge">Excellent</div>
+                <div class="health-bars">
+                  <div class="health-bar-item">
+                    <span>Cash Flow</span>
+                    <div class="mini-bar">
+                      <div class="mini-bar-fill" style="width:82%;background:var(--success)"></div>
+                    </div>
+                    <span>82%</span>
+                  </div>
+                  <div class="health-bar-item">
+                    <span>Debt Ratio</span>
+                    <div class="mini-bar">
+                      <div class="mini-bar-fill" style="width:24%;background:var(--warning)"></div>
+                    </div>
+                    <span>24%</span>
+                  </div>
+                  <div class="health-bar-item">
+                    <span>Emergency Fund</span>
+                    <div class="mini-bar">
+                      <div class="mini-bar-fill" style="width:91%;background:var(--success)"></div>
+                    </div>
+                    <span>91%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+          <div class="chart-card large" id="incomeExpenseCard">
+            <div class="chart-header">
+              <div>
+                <h3 class="chart-title">Income vs Expenses</h3>
+                <p class="chart-subtitle">12-month trend analysis</p>
+              </div>
+              <div class="chart-controls">
+                <button class="chart-btn active" data-range="12m">12M</button>
+                <button class="chart-btn" data-range="6m">6M</button>
+                <button class="chart-btn" data-range="3m">3M</button>
+                <button class="chart-btn" data-range="export">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="incomeExpenseChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card" id="expensePieCard">
+            <div class="chart-header">
+              <div>
+                <h3 class="chart-title">Expense Breakdown</h3>
+                <p class="chart-subtitle">By category this month</p>
+              </div>
+            </div>
+            <div class="chart-wrap pie-wrap">
+              <canvas id="expensePieChart"></canvas>
+            </div>
+            <div class="pie-legend" id="pieLegend"></div>
+          </div>
+        </section>
+
+        <!-- Bar Chart + AI Insights -->
+        <section class="charts-section">
+          <div class="chart-card" id="barChartCard">
+            <div class="chart-header">
+              <div>
+                <h3 class="chart-title">Category Comparison</h3>
+                <p class="chart-subtitle">Budget vs Actual spending</p>
+              </div>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="categoryBarChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card ai-insights-card" id="aiInsightsCard">
+            <div class="chart-header">
+              <div>
+                <h3 class="chart-title">
+                  <span class="ai-badge-label">AI</span>
+                  Smart Insights
+                </h3>
+                <p class="chart-subtitle">Powered by FinSight AI Engine v3.2</p>
+              </div>
+              <div class="ai-status-dot"></div>
+            </div>
+            <div class="insights-list" id="insightsList"></div>
+          </div>
+        </section>
+
+        <!-- Prediction + Recent Transactions -->
+        <section class="charts-section">
+          <div class="chart-card" id="predictionCard">
+            <div class="chart-header">
+              <div>
+                <h3 class="chart-title">
+                  <span class="ai-badge-label">AI</span>
+                  Spending Prediction
+                </h3>
+                <p class="chart-subtitle">Next 3-month forecast</p>
+              </div>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="predictionChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card transactions-card" id="transactionsMiniCard">
+            <div class="chart-header">
+              <div>
+                <h3 class="chart-title">Recent Transactions</h3>
+                <p class="chart-subtitle">Last 5 activities</p>
+              </div>
+              <a href="#" class="view-all-link" data-page="transactions">View all →</a>
+            </div>
+            <div class="mini-transactions" id="miniTransactions"></div>
+          </div>
+        </section>
+
+        <!-- Net Worth + Cash Flow Row -->
+        <section class="charts-section" style="grid-template-columns:1fr 1fr;">
+          <div class="chart-card" id="netWorthCard">
+            <div class="chart-header">
+              <div>
+                <h3 class="chart-title">Net Worth Trend</h3>
+                <p class="chart-subtitle">Portfolio growth over 12 months</p>
+              </div>
+              <div class="chart-controls">
+                <div class="live-badge"><span class="live-dot"></span>Live</div>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height:200px"><canvas id="netWorthChart"></canvas></div>
+            <div class="chart-footer-row" id="netWorthStats"></div>
+          </div>
+
+          <div class="chart-card" id="cashFlowCard">
+            <div class="chart-header">
+              <div>
+                <h3 class="chart-title">Monthly Cash Flow</h3>
+                <p class="chart-subtitle">Net income − expenses per month</p>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height:200px"><canvas id="cashFlowChart"></canvas></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ===== TRANSACTIONS PAGE ===== -->
+      <div class="page" id="page-transactions">
+        <div class="page-card">
+          <div class="page-card-header">
+            <div class="filter-row">
+              <div class="search-wrap small">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="M21 21l-4.35-4.35" />
+                </svg>
+                <input type="text" class="search-input" placeholder="Search transactions..." id="txSearch" />
+              </div>
+              <select class="filter-select" id="txFilter">
+                <option value="all">All Categories</option>
+                <option value="food">Food & Dining</option>
+                <option value="transport">Transport</option>
+                <option value="shopping">Shopping</option>
+                <option value="utilities">Utilities</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="health">Health</option>
+                <option value="income">Income</option>
+              </select>
+              <select class="filter-select" id="txStatusFilter">
+                <option value="all">All Status</option>
+                <option value="completed">Completed</option>
+                <option value="pending">Pending</option>
+                <option value="failed">Failed</option>
+              </select>
+              <button class="btn-primary" id="exportTxBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                </svg>
+                Export CSV
+              </button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table" id="txTable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Merchant</th>
+                  <th>Category</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Type</th>
+                </tr>
+              </thead>
+              <tbody id="txTableBody"></tbody>
+            </table>
+          </div>
+          <div class="table-pagination">
+            <span class="pagination-info" id="paginationInfo">Showing 1–10 of 50</span>
+            <div class="pagination-btns">
+              <button class="page-btn" id="prevPage">←</button>
+              <span id="pageIndicator">1 / 5</span>
+              <button class="page-btn" id="nextPage">→</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== ANALYTICS PAGE ===== -->
+      <div class="page" id="page-analytics">
+        <div class="analytics-grid">
+          <div class="chart-card full-width">
+            <div class="chart-header">
+              <div>
+                <h3 class="chart-title">Annual Financial Overview</h3>
+                <p class="chart-subtitle">Monthly breakdown of all financial flows</p>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height:280px">
+              <canvas id="analyticsOverview"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <h3 class="chart-title">Savings Trend</h3>
+                <p class="chart-subtitle">Monthly savings accumulation</p>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height:220px"><canvas id="savingsTrend"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <h3 class="chart-title">Expense Heatmap</h3>
+                <p class="chart-subtitle">Spending intensity by week</p>
+              </div>
+            </div>
+            <div class="heatmap-wrap" id="heatmapWrap"></div>
+          </div>
+          <div class="chart-card full-width">
+            <div class="chart-header">
+              <div>
+                <h3 class="chart-title">Category Deep Dive</h3>
+                <p class="chart-subtitle">Spend vs budget per category</p>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height:260px"><canvas id="categoryDeepDive"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== AI INSIGHTS PAGE ===== -->
+      <div class="page" id="page-ai-insights">
+        <div class="ai-insights-page">
+          <div class="ai-hero">
+            <div class="ai-hero-inner">
+              <div class="ai-icon-large">
+                <svg viewBox="0 0 48 48" fill="none">
+                  <circle cx="24" cy="24" r="24" fill="url(#aiGrad)" />
+                  <path
+                    d="M24 14v6M24 28v6M14 24h6M28 24h6M17.5 17.5l4.2 4.2M26.3 26.3l4.2 4.2M26.3 17.5l-4.2 4.2M17.5 26.3l4.2 4.2"
+                    stroke="white" stroke-width="2" stroke-linecap="round" />
+                  <defs>
+                    <linearGradient id="aiGrad" x1="0" y1="0" x2="48" y2="48">
+                      <stop stop-color="#6366f1" />
+                      <stop offset="1" stop-color="#a855f7" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+              <div>
+                <h2 class="ai-hero-title">FinSight AI Intelligence Engine</h2>
+                <p class="ai-hero-sub">Your financial data is analyzed in real-time using advanced ML models to surface
+                  actionable insights.</p>
+              </div>
+            </div>
+            <div class="ai-model-badge">Model: GPT-Finance v3.2 • Last updated: 2 mins ago</div>
+          </div>
+          <div class="insights-grid" id="insightsPageGrid"></div>
+          <div class="chart-card" style="margin-top:1.5rem">
+            <div class="chart-header">
+              <div>
+                <h3 class="chart-title"><span class="ai-badge-label">AI</span> Predictive Analysis</h3>
+                <p class="chart-subtitle">Machine learning forecast for next 6 months</p>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height:280px"><canvas id="aiPredictChart"></canvas></div>
+          </div>
+          <div class="recommendations-grid" id="recommendationsGrid"></div>
+        </div>
+      </div>
+
+      <!-- ===== CREDIT RISK PAGE ===== -->
+      <div class="page" id="page-credit-risk">
+        <div class="credit-risk-layout">
+          <div class="credit-score-panel">
+            <div class="chart-card credit-score-card">
+              <h3 class="chart-title" style="margin-bottom:1.5rem">Credit Score</h3>
+              <div class="credit-gauge-wrap">
+                <canvas id="creditGaugeChart" width="280" height="160"></canvas>
+                <div class="gauge-labels">
+                  <span>300</span>
+                  <span>850</span>
+                </div>
+                <div class="credit-score-display">
+                  <div class="credit-score-num" id="creditScoreNum">742</div>
+                  <div class="credit-score-label" id="creditScoreLabel">Very Good</div>
+                </div>
+              </div>
+              <div class="credit-range-bar">
+                <div class="range-segment poor">Poor</div>
+                <div class="range-segment fair">Fair</div>
+                <div class="range-segment good">Good</div>
+                <div class="range-segment vgood">V.Good</div>
+                <div class="range-segment excellent">Excellent</div>
+              </div>
+              <div class="credit-score-meta">
+                <div class="meta-item">
+                  <span class="meta-icon">📈</span>
+                  <div>
+                    <div class="meta-label">Change (30d)</div>
+                    <div class="meta-val positive">+14 pts</div>
+                  </div>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-icon">🏦</span>
+                  <div>
+                    <div class="meta-label">Bureau</div>
+                    <div class="meta-val">CIBIL / FICO</div>
+                  </div>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-icon">🗓</span>
+                  <div>
+                    <div class="meta-label">Last Updated</div>
+                    <div class="meta-val">Apr 15, 2026</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="credit-right">
+            <div class="chart-card">
+              <h3 class="chart-title" style="margin-bottom:1.5rem">Risk Level</h3>
+              <div class="risk-level-display" id="riskLevelDisplay">
+                <div class="risk-badge low" id="riskBadge">LOW RISK</div>
+                <p class="risk-desc">Your financial behavior indicates a low risk profile. You have excellent payment
+                  history and manageable debt levels.</p>
+              </div>
+              <div class="risk-factors" id="riskFactors"></div>
+            </div>
+
+            <div class="chart-card">
+              <h3 class="chart-title" style="margin-bottom:1rem">Credit Score History</h3>
+              <div class="chart-wrap" style="height:200px">
+                <canvas id="creditHistoryChart"></canvas>
+              </div>
+            </div>
+
+            <div class="chart-card">
+              <h3 class="chart-title" style="margin-bottom:1rem">Score Improvement Tips</h3>
+              <div class="tips-list" id="scoreTips"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== FRAUD DETECTION PAGE ===== -->
+      <div class="page" id="page-fraud-detection">
+        <div class="fraud-layout">
+          <div class="fraud-header-stats" id="fraudStats"></div>
+          <div class="chart-card" style="margin-bottom:1.5rem">
+            <div class="chart-header">
+              <div>
+                <h3 class="chart-title">Fraud Detection Activity</h3>
+                <p class="chart-subtitle">Transaction anomaly scores over time</p>
+              </div>
+              <div class="fraud-status-badge">🛡 Protection Active</div>
+            </div>
+            <div class="chart-wrap" style="height:220px"><canvas id="fraudChart"></canvas></div>
+          </div>
+          <div class="fraud-alerts-section">
+            <h3 class="section-heading">🚨 Active Alerts</h3>
+            <div class="fraud-alerts-grid" id="fraudAlertsGrid"></div>
+          </div>
+          <div class="fraud-history-section">
+            <h3 class="section-heading">Recent Suspicious Transactions</h3>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Merchant</th>
+                    <th>Amount</th>
+                    <th>Risk Score</th>
+                    <th>Location</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="fraudTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== SETTINGS PAGE ===== -->
+      <div class="page" id="page-settings">
+        <div class="settings-layout">
+          <div class="settings-sidebar">
+            <a href="#" class="settings-nav-item active" data-setting="profile">Profile</a>
+            <a href="#" class="settings-nav-item" data-setting="notifications">Notifications</a>
+            <a href="#" class="settings-nav-item" data-setting="security">Security</a>
+            <a href="#" class="settings-nav-item" data-setting="appearance">Appearance</a>
+            <a href="#" class="settings-nav-item" data-setting="integrations">Integrations</a>
+          </div>
+          <div class="settings-content">
+            <div class="chart-card settings-section" id="settings-profile">
+              <h3 class="chart-title" style="margin-bottom:1.5rem">Profile Settings</h3>
+              <div class="settings-avatar-row">
+                <div class="settings-avatar">
+                  <img src="profile.jpg" alt="Profile" class="avatar-img-round">
+                </div>
+                <div>
+                  <button class="btn-primary">Upload Photo</button>
+                  <p class="hint-text">JPG, PNG or GIF. Max 2MB.</p>
+                </div>
+              </div>
+              <div class="settings-form">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">First Name</label>
+                    <input type="text" id="prof-fname" class="form-input" value="Manojh" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Last Name</label>
+                    <input type="text" id="prof-lname" class="form-input" value="Kumar" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Email Address</label>
+                  <input type="email" id="prof-email" class="form-input" value="manojh.vallappan@finsightai.io" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Currency</label>
+                  <select class="form-input">
+                    <option selected>INR — Indian Rupee</option>
+                    <option>USD — US Dollar</option>
+                    <option>EUR — Euro</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Monthly Income Goal</label>
+                  <input type="number" class="form-input" value="12000" />
+                </div>
+                <button class="btn-primary" id="saveProfileBtn" style="margin-top:0.5rem">Save Changes</button>
+              </div>
+            </div>
+
+            <!-- Notifications Section -->
+            <div class="chart-card settings-section" id="settings-notifications" style="display:none">
+              <h3 class="chart-title" style="margin-bottom:1.5rem">Notification Preferences</h3>
+              <div class="settings-form">
+                <div class="form-group">
+                  <label class="form-label">Email Notifications</label>
+                  <div
+                    style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:var(--surface); border-radius:8px">
+                    <span style="font-size:0.85rem">Monthly financial reports</span>
+                    <input type="checkbox" checked />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div
+                    style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:var(--surface); border-radius:8px">
+                    <span style="font-size:0.85rem">Security alerts & fraud detection</span>
+                    <input type="checkbox" checked />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div
+                    style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:var(--surface); border-radius:8px">
+                    <span style="font-size:0.85rem">AI daily insights & spending tips</span>
+                    <input type="checkbox" />
+                  </div>
+                </div>
+                <button class="btn-primary" style="margin-top:1rem">Update Preferences</button>
+              </div>
+            </div>
+
+            <!-- Security Section -->
+            <div class="chart-card settings-section" id="settings-security" style="display:none">
+              <h3 class="chart-title" style="margin-bottom:1.5rem">Security & Privacy</h3>
+              <div class="settings-form">
+                <div class="form-group">
+                  <label class="form-label">Two-Factor Authentication (2FA)</label>
+                  <div
+                    style="display:flex; justify-content:space-between; align-items:center; padding:14px; background:rgba(0,196,140,0.05); border:1px solid rgba(0,196,140,0.1); border-radius:10px">
+                    <div>
+                      <div style="font-size:0.85rem; font-weight:600; color:var(--success)">Currently Enabled</div>
+                      <div style="font-size:0.75rem; color:var(--text-3)">Protects your account with an extra
+                        verification step</div>
+                    </div>
+                    <button class="chart-btn" style="background:rgba(255,255,255,0.05)">Disable</button>
+                  </div>
+                </div>
+                <div class="form-group" style="margin-top:1rem">
+                  <label class="form-label">Update Password</label>
+                  <input type="password" class="form-input" placeholder="Current Password" style="margin-bottom:8px" />
+                  <input type="password" class="form-input" placeholder="New Password" />
+                </div>
+                <button class="btn-primary" style="margin-top:1rem">Update Security</button>
+              </div>
+            </div>
+
+            <!-- Appearance Section -->
+            <div class="chart-card settings-section" id="settings-appearance" style="display:none">
+              <h3 class="chart-title" style="margin-bottom:1.5rem">Appearance</h3>
+              <div class="settings-form">
+                <div class="form-group">
+                  <label class="form-label">Theme Mode</label>
+                  <div class="theme-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
+                    <div class="theme-option active"
+                      style="padding:20px; border-radius:12px; border:1px solid var(--border-2); background:var(--bg); cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:8px">
+                      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                      </svg>
+                      <span style="font-size:0.8rem; font-weight:600">Dark Mode</span>
+                    </div>
+                    <div class="theme-option"
+                      style="padding:20px; border-radius:12px; border:1px solid var(--border); background:#fff; color:#1a202c; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:8px">
+                      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <circle cx="12" cy="12" r="5" />
+                        <path
+                          d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                      </svg>
+                      <span style="font-size:0.8rem; font-weight:600">Light Mode</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group" style="margin-top:1rem">
+                  <label class="form-label">Accent Color</label>
+                  <div style="display:flex; gap:12px">
+                    <div title="Gold"
+                      style="width:24px; height:24px; border-radius:50%; background:var(--gold); border:2px solid #fff; box-shadow:0 0 0 2px var(--gold)">
+                    </div>
+                    <div title="Silver" style="width:24px; height:24px; border-radius:50%; background:var(--silver)">
+                    </div>
+                    <div title="Platinum" style="width:24px; height:24px; border-radius:50%; background:#e5e4e2"></div>
+                    <div title="Bronze" style="width:24px; height:24px; border-radius:50%; background:#8b6e1b"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Integrations Section -->
+            <div class="chart-card settings-section" id="settings-integrations" style="display:none">
+              <h3 class="chart-title" style="margin-bottom:1.5rem">Bank Integrations</h3>
+              <div class="settings-form">
+                <div class="integration-item"
+                  style="display:flex; align-items:center; justify-content:space-between; padding:16px; background:var(--surface); border:1px solid var(--border); border-radius:12px; margin-bottom:12px">
+                  <div style="display:flex; align-items:center; gap:12px">
+                    <div
+                      style="width:40px; height:40px; background:#e0f2fe; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#0284c7; font-weight:700">
+                      ICICI</div>
+                    <div>
+                      <div style="font-size:0.85rem; font-weight:600">ICICI Bank</div>
+                      <div style="font-size:0.72rem; color:var(--text-3)">Disconnected</div>
+                    </div>
+                  </div>
+                  <button class="chart-btn">Connect</button>
+                </div>
+                <div class="integration-item"
+                  style="display:flex; align-items:center; justify-content:space-between; padding:16px; background:var(--surface); border:1px solid var(--border); border-radius:12px">
+                  <div style="display:flex; align-items:center; gap:12px">
+                    <div
+                      style="width:40px; height:40px; background:#fef3c7; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#d97706; font-weight:700">
+                      HDFC</div>
+                    <div>
+                      <div style="font-size:0.85rem; font-weight:600">HDFC Bank</div>
+                      <div style="font-size:0.72rem; color:var(--text-3)">Disconnected</div>
+                    </div>
+                  </div>
+                  <button class="chart-btn">Connect</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Notification Panel -->
+  <div class="notif-panel" id="notifPanel">
+    <div class="notif-panel-header">
+      <h4>Notifications</h4>
+      <button class="mark-all-btn" id="markAllRead">Mark all read</button>
+    </div>
+    <div class="notif-list" id="notifList"></div>
+  </div>
+  <div class="notif-overlay" id="notifOverlay"></div>
+
+  <script src="app.js?v=2.0"></script>
+</body>
+
+</html>
